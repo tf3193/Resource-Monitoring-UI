@@ -43,7 +43,7 @@ class _CPUState extends State<CPUGraph> {
       new charts.Series<LinearValue, int>(
         domainFn: (LinearValue valdata, _) => valdata.time,
         measureFn: (LinearValue valdata, _) => valdata.usage,
-        id: 'Memory',
+        id: 'CPU',
         data: data,
       )
     ];
