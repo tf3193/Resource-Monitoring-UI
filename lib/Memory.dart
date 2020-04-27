@@ -72,54 +72,13 @@ class _MemState extends State<MemoryGraph> {
           title: new Text("Memory Graph"),
         ),
         body: new Center(child: chartWidget),
-        floatingActionButton: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: FloatingActionButton(
-                  onPressed: () {
-                    setState(() {
-                      _updateData();
-                    });
-                  },
-                  child: Icon(
-                    Icons.add,
-                  ),
-                  backgroundColor: Colors.red,
-                ),
-              ),
-            ]
-        )
     );
-  }
-
-  /// Create one series with sample hard coded data.
-  static List<charts.Series<LinearSales, int>> _createSampleData() {
-    final data = [
-      new LinearSales(0, 5),
-      new LinearSales(1, 25),
-      new LinearSales(2, 100),
-      new LinearSales(3, 75),
-    ];
-
-    return [
-      new charts.Series<LinearSales, int>(
-        id: 'Sales',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
-        data: data,
-      )
-    ];
   }
 
   Future<List<charts.Series<LinearSales, int>>> _updateData() async {
     var body = await Getdata(url);
-    print(body);
     Map parsed = json.decode(body.toString());
-    print("adding " + parsed['value'].toString());
-    data.add(LinearValue(count, parsed['value']));
+    data.add(LinearValue(count, parsed['value']*100));
     count++;
     MemList = [
       new charts.Series<LinearSales, int>(

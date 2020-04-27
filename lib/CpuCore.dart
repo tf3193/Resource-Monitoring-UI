@@ -126,17 +126,6 @@ class _CPUCoreState extends State<CPUCoreGraph> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: FloatingActionButton(
-                  onPressed: () {
-                    setState(() {
-                      _updateData();
-                    });
-                  },
-                  child: Icon(
-                    Icons.add,
-                  ),
-                  backgroundColor: Colors.red,
-                ),
               ),
             ]
         )
@@ -147,15 +136,13 @@ class _CPUCoreState extends State<CPUCoreGraph> {
   Future<List<charts.Series<LinearSales, int>>> _updateData() async {
     var body = await Getdata(url);
     var num_cores = await Getdata(Coreurl);
-    print(body);
     Map parsed = json.decode(body.toString());
-    print("adding " + parsed['value'].toString());
-    core1.add(LinearValue(count, parsed['0']));
-    core2.add(LinearValue(count, parsed['1']));
-    core3.add(LinearValue(count, parsed['2']));
-    core4.add(LinearValue(count, parsed['3']));
-    core5.add(LinearValue(count, parsed['4']));
-    core6.add(LinearValue(count, parsed['5']));
+    core1.add(LinearValue(count, parsed['0']*100));
+    core2.add(LinearValue(count, parsed['1']*100));
+    core3.add(LinearValue(count, parsed['2']*100));
+    core4.add(LinearValue(count, parsed['3']*100));
+    core5.add(LinearValue(count, parsed['4']*100));
+    core6.add(LinearValue(count, parsed['5']*100));
     count++;
     CPUCoreList = [
       new charts.Series<LinearValue, int>(

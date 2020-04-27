@@ -46,32 +46,6 @@ class _ProcessState extends State<ProcessTable> {
   }
 
 
-/*
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: DataTable(columns: [
-          DataColumn(label: Text('PID')),
-          DataColumn(label: Text('Name')),
-          DataColumn(label: Text('Memory')),
-          DataColumn(label: Text('State')),
-        ], rows: _rowList),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          setState(() {
-            //_addRow();
-            //_updateData();
-          });
-        },
-        label: Text('Add Row'),
-        backgroundColor: Colors.green,
-      ),
-
-    );
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +76,7 @@ class _ProcessState extends State<ProcessTable> {
             _updateData();
           });
         },
-        label: Text('Add Row'),
+        label: Text('Update Table'),
         backgroundColor: Colors.green,
       ),
     );

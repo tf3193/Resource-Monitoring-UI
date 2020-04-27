@@ -65,25 +65,6 @@ class _CPUState extends State<CPUGraph> {
           title: new Text("CPU Graph"),
         ),
         body: new Center(child: chartWidget),
-        floatingActionButton: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: FloatingActionButton(
-                  onPressed: () {
-                    setState(() {
-                      _updateData();
-                    });
-                  },
-                  child: Icon(
-                    Icons.add,
-                  ),
-                  backgroundColor: Colors.red,
-                ),
-              ),
-            ]
-        )
     );
   }
 
@@ -109,10 +90,8 @@ class _CPUState extends State<CPUGraph> {
 
   Future<List<charts.Series<LinearSales, int>>> _updateData() async {
     var body = await Getdata(url);
-    print(body);
     Map parsed = json.decode(body.toString());
-    print("adding " + parsed['value'].toString());
-    data.add(LinearValue(count, parsed['value']));
+    data.add(LinearValue(count, parsed['value']*100));
     count++;
     CPUList = [
       new charts.Series<LinearSales, int>(
