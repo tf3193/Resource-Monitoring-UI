@@ -104,7 +104,7 @@ class _CPUCoreState extends State<CPUCoreGraph> {
       )
     ];
     CPUCoreList = series;
-    var chart = new charts.LineChart(CPUCoreList, animate: true);
+    var chart = new charts.LineChart(CPUCoreList, animate: true, behaviors: [new charts.SeriesLegend()]);
 
 
     //var chart = new charts.LineChart(MemList, animate: animate);

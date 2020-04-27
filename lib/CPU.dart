@@ -123,7 +123,8 @@ class _CPUState extends State<CPUGraph> {
         data: data,
       )
     ];
-
+    print("asdfasdfsa");
+    print(data.length());
   }
 
 }
