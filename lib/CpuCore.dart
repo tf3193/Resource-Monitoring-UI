@@ -36,7 +36,7 @@ class _CPUCoreState extends State<CPUCoreGraph> {
     charts.ColorUtil.fromDartColor(Colors.blueGrey)
   ];
   Map coreMap = Map<String, List<LinearValue>>();
-  Timer _everySecond;
+  Timer _everyFiveSecond;
   var count = 0;
 
   @override
@@ -46,11 +46,17 @@ class _CPUCoreState extends State<CPUCoreGraph> {
     coreMap["1"] = [LinearValue(0,0)];
     super.initState();
     _updateData();
-    _everySecond = Timer.periodic(Duration(seconds: 5), (Timer t) {
+    _everyFiveSecond = Timer.periodic(Duration(seconds: 5), (Timer t) {
       setState(() {
         _updateData();
       });
     });
+  }
+
+  @override
+  void dispose() {
+    _everyFiveSecond.cancel();
+    super.dispose();
   }
 
   @override

@@ -30,6 +30,12 @@ class _MemState extends State<MemoryGraph> {
     });
   }
 
+  @override
+  void dispose() {
+    _everyFiveSecond.cancel();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {

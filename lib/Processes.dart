@@ -38,6 +38,13 @@ class _ProcessState extends State<ProcessTable> {
 
   }
 
+  @override
+  void dispose() {
+    _everyFiveSecond.cancel();
+    super.dispose();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {

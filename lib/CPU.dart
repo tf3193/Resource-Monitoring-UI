@@ -16,7 +16,7 @@ class _CPUState extends State<CPUGraph> {
   List<charts.Series> CPUList;
   final url = 'http://localhost:5000/api/cpu';
   List<LinearValue> data = [];
-  Timer _everySecond;
+  Timer _everyFiveSecond;
   var count = 0;
 
 
@@ -26,12 +26,20 @@ class _CPUState extends State<CPUGraph> {
     setState(() {
       _updateData();
     });
-    _everySecond = Timer.periodic(Duration(seconds: 5), (Timer t) {
+    _everyFiveSecond = Timer.periodic(Duration(seconds: 5), (Timer t) {
       setState(() {
         _updateData();
       });
     });
   }
+
+  @override
+  void dispose() {
+    _everyFiveSecond.cancel();
+    super.dispose();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
