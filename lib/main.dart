@@ -7,7 +7,9 @@ import 'Processes.dart';
 
 void main() => runApp(MyApp());
 
+///Base class to create the home screen
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,6 +21,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+///The card form which creates the buttons to direct you to other metric viewers.
 class SelectMetricScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -33,11 +36,13 @@ class SelectMetricScreen extends StatelessWidget {
   }
 }
 
+///Creates the base metric from the metric form state.
 class MetricForm extends StatefulWidget {
   @override
   _MetricFormState createState() => _MetricFormState();
 }
 
+///Creates the memory state from teh memory graph class
 class MemScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
@@ -50,6 +55,7 @@ class MemScreen extends StatelessWidget {
   }
 }
 
+/// Creates the cpu screen from the CPUGraph class
 class CPUScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
@@ -62,6 +68,7 @@ class CPUScreen extends StatelessWidget {
   }
 }
 
+/// Creates the process screen from the ProcessTable class
 class ProcessScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
@@ -74,6 +81,7 @@ class ProcessScreen extends StatelessWidget {
   }
 }
 
+/// Creates the CPU Core screen from the CPUCoreGraph Class
 class CPUCoreScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
@@ -87,47 +95,32 @@ class CPUCoreScreen extends StatelessWidget {
 }
 
 
-
+/// Extends the metrics form state to create the basic view.
 class _MetricFormState extends State<MetricForm>
     with SingleTickerProviderStateMixin {
 
-  AnimationController animationController;
-  Animation<Color> colorAnimation;
+
   @override
   void initState() {
     super.initState();
-    animationController = AnimationController(
-      vsync: this, duration: const Duration(milliseconds: 1200));
-    var colorTween = TweenSequence([
-      TweenSequenceItem(
-        tween: ColorTween(begin: Colors.red, end: Colors.orange),
-        weight: 1,
-      ),
-      TweenSequenceItem(
-        tween: ColorTween(begin: Colors.orange, end: Colors.yellow),
-        weight: 1,
-
-      ),
-      TweenSequenceItem(
-        tween: ColorTween(begin: Colors.yellow, end: Colors.green),
-        weight: 1,
-      ),
-    ]);
-    colorAnimation = animationController.drive(colorTween); // NEW
   }
 
+  ///Method to push the CPUScreen onto the stack
   void _showCPUGraph() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => CPUScreen()));
   }
+  ///Method to push the MemScreen onto the stack
   void _showMemoryMetrics() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => MemScreen()));
   }
+  ///Method to push the Processcreen onto the stack
   void _showProcessGraph() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => ProcessScreen()));
   }
+  ///Method to push the CPUCoreScreen onto the stack
   void _showCPUCoreGraph() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => CPUCoreScreen()));
@@ -137,17 +130,8 @@ class _MetricFormState extends State<MetricForm>
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
+      /// Create a list of buttons to direct you to different states
       children: [
-        AnimatedBuilder(
-          animation: animationController,
-          builder: (context, child) {
-            return LinearProgressIndicator(
-              value: animationController.value,
-              valueColor: colorAnimation,
-              backgroundColor: colorAnimation.value.withOpacity((0.4)),
-            );
-          },
-        ),
         Container(
           height: 40,
           width: double.infinity,

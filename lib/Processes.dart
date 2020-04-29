@@ -1,58 +1,53 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:intl/intl.dart';
-
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'api.dart';
 
-
+///Create the process table state
 class ProcessTable extends StatefulWidget {
   @override
   _ProcessState createState() => _ProcessState();
 }
 
+/// Create the processes table.
 class _ProcessState extends State<ProcessTable> {
   bool sort = true;
-  final List<Map<String, String>> listOfColumns = [
-    {"PID": "0", "Name": "1", "Memory": "0", "State": ""}
-  ];
   List<DataRow> _rowList = [
     DataRow(cells: <DataCell>[
-      DataCell(Text('0')),
-      DataCell(Text('a')),
-      DataCell(Text('0')),
-      DataCell(Text(""))
+      DataCell(Text('Initial Data Loading')),
+      DataCell(Text('Initial Data Loading')),
+      DataCell(Text('Initial Data Loading')),
+      DataCell(Text("Initial Data Loading"))
     ]),
   ];
-
-  List<charts.Series> CPUList;
-  Map processes = new Map();
-  bool animate;
+  Timer _everyFiveSecond;
   final url = 'http://localhost:5000/api/processes';
-  Timer _everySecond;
 
   @override
   void initState() {
-
     super.initState();
+    //Grab the initial set of data
     _updateData();
-    _everySecond = Timer.periodic(Duration(seconds: 5), (Timer t) {
+    // Now every 5 seconds update the sate and grab new data.
+    _everyFiveSecond = Timer.periodic(Duration(seconds: 5), (Timer t) {
       setState(() {
-        //_updateData();
+        _updateData();
       });
     });
+
+
   }
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //creates the app bar to go back to main page
           appBar: AppBar(
             title: Text('Processes'),
           ),
           body: ListView(children: <Widget>[
+            //Title of Table
             Center(
                 child: Text(
                   'Processes',
@@ -69,16 +64,6 @@ class _ProcessState extends State<ProcessTable> {
             ),
 
           ]),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          setState(() {
-            //_addRow();
-            _updateData();
-          });
-        },
-        label: Text('Update Table'),
-        backgroundColor: Colors.green,
-      ),
     );
 
   }
@@ -93,7 +78,9 @@ class _ProcessState extends State<ProcessTable> {
     }
   }
 
-
+  ///Update data method to call Getdata and then parse for each process and
+  ///add it to the row.
+  ///It then overwrites our entire row list with the new list generated
   Future _updateData() async {
     List<DataRow> _newList = [];
 

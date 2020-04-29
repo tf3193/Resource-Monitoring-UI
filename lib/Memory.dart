@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:intl/intl.dart';
-
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'api.dart';
 
@@ -14,52 +11,41 @@ class MemoryGraph extends StatefulWidget {
 
 class _MemState extends State<MemoryGraph> {
   List<charts.Series> MemList;
-  bool animate;
   final url = 'http://localhost:5000/api/memory';
-  var data;
-  Timer _everySecond;
+  List<LinearValue> data = [];
+  Timer _everyFiveSecond;
+  var count = 0;
 
-  var count = 1;
-
-  //_MemState(this.MemList, {this.animate});
 
   @override
   void initState() {
-    data = [
-      LinearValue(0,0)
-    ];
     super.initState();
-    _everySecond = Timer.periodic(Duration(seconds: 5), (Timer t) {
+    setState(() {
+      _updateData();
+    });
+    _everyFiveSecond = Timer.periodic(Duration(seconds: 5), (Timer t) {
       setState(() {
         _updateData();
       });
     });
   }
 
-//  factory _MemState.withSampleData() {
-//    return new _MemState(
-//      _createSampleData(),
-//      // Disable animations for image tests.
-//      animate: true,
-//    );
-//  }
 
   @override
   Widget build(BuildContext context) {
+
     var series = [
       new charts.Series<LinearValue, int>(
         domainFn: (LinearValue valdata, _) => valdata.time,
         measureFn: (LinearValue valdata, _) => valdata.usage,
-        id: 'Memory',
+        id: 'Memory Utilization %',
         data: data,
       )
     ];
+
     MemList = series;
-    var chart = new charts.LineChart(MemList, animate: true);
+    var chart = new charts.LineChart(MemList, animate: true, behaviors: [new charts.SeriesLegend()]);
 
-
-    //var chart = new charts.LineChart(MemList, animate: animate);
-    //return new charts.LineChart(CPUList, animate: animate);
     var chartWidget = new Padding(
       padding: new EdgeInsets.all(32.0),
       child: new SizedBox(
@@ -75,17 +61,19 @@ class _MemState extends State<MemoryGraph> {
     );
   }
 
-  Future<List<charts.Series<LinearSales, int>>> _updateData() async {
+  /// Method to get new data from Getdata and append it to data then update
+  /// MemList.
+  Future<List<charts.Series<LinearValue, int>>> _updateData() async {
     var body = await Getdata(url);
     Map parsed = json.decode(body.toString());
     data.add(LinearValue(count, parsed['value']*100));
     count++;
     MemList = [
-      new charts.Series<LinearSales, int>(
-        id: 'Sales',
+      new charts.Series<LinearValue, int>(
+        id: 'Memory Utilization %',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        domainFn: (LinearValue value, _) => value.time,
+        measureFn: (LinearValue value, _) => value.usage,
         data: data,
       )
     ];
@@ -94,14 +82,6 @@ class _MemState extends State<MemoryGraph> {
 
 }
 
-
-/// Sample linear data type.
-class LinearSales {
-  final int year;
-  final int sales;
-
-  LinearSales(this.year, this.sales);
-}
 
 /// Sample linear data type.
 class LinearValue {
