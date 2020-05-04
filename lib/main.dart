@@ -3,7 +3,7 @@ import 'CpuCore.dart';
 import 'Memory.dart';
 import 'CPU.dart';
 import 'Processes.dart';
-
+import "network.dart";
 
 void main() => runApp(MyApp());
 
@@ -94,6 +94,19 @@ class CPUCoreScreen extends StatelessWidget {
   }
 }
 
+/// Creates the CPU Core screen from the CPUCoreGraph Class
+class NetworkScreen extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        width: 5000,
+        child: new networkGraph(),
+
+      ),
+    );
+  }
+}
+
 
 /// Extends the metrics form state to create the basic view.
 class _MetricFormState extends State<MetricForm>
@@ -124,6 +137,11 @@ class _MetricFormState extends State<MetricForm>
   void _showCPUCoreGraph() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => CPUCoreScreen()));
+  }
+  ///Method to push the networkScreen onto the stack
+  void _showNetworkGraph() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => NetworkScreen()));
   }
 
   @override
@@ -174,6 +192,17 @@ class _MetricFormState extends State<MetricForm>
             textColor: Colors.white,
             onPressed:  _showProcessGraph, // UPDATES
             child: Text('Process Stats'),
+          ),
+        ),
+        Container(
+          height: 40,
+          width: double.infinity,
+          margin: EdgeInsets.all(12),
+          child: FlatButton(
+            color: Colors.blue,
+            textColor: Colors.white,
+            onPressed: _showNetworkGraph, // UPDATES
+            child: Text('Network Stats'),
           ),
         ),
       ],

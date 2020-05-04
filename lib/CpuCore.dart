@@ -14,7 +14,6 @@ class CPUCoreGraph extends StatefulWidget {
 class _CPUCoreState extends State<CPUCoreGraph> {
   List<charts.Series> CPUCoreList = [];
   final url = 'http://localhost:5000/api/core';
-  List<charts.Series<LinearValue, int>> cores;
 
   //This will only support up to 16 core processors.
   List<charts.Color> colors = [

@@ -45,7 +45,6 @@ class _ProcessState extends State<ProcessTable> {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,16 +72,6 @@ class _ProcessState extends State<ProcessTable> {
           ]),
     );
 
-  }
-
-  onSortColumn(int columnIndex, bool ascending) {
-    if (columnIndex == 0) {
-      if (ascending) {
-        _rowList.sort((a, b) => a.toString().compareTo(b.toString()));
-      } else {
-        _rowList.sort((a, b) => b.toString().compareTo(a.toString()));
-      }
-    }
   }
 
   ///Update data method to call Getdata and then parse for each process and
